@@ -3,21 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nico Maggioli - Portfolio Editor</title>
+    <title>Nico Maggioli - Complete Portfolio Editor</title>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background: #0a0a0f;
             color: #d3d3d9;
             line-height: 1.6;
         }
-        
         .header {
             background: #111118;
             border-bottom: 1px solid #2a2a3e;
@@ -26,134 +20,48 @@
             top: 0;
             z-index: 100;
         }
-        
-        .header h1 {
-            font-size: 22px;
-            color: #fff;
-            margin-bottom: 5px;
-        }
-        
-        .header p {
-            color: #8c8c95;
-            font-size: 13px;
-        }
-        
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 30px;
-        }
-        
-        .toolbar {
+        .header h1 { font-size: 22px; color: #fff; margin-bottom: 5px; }
+        .header p { color: #8c8c95; font-size: 13px; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 30px; }
+        .tabs {
             display: flex;
-            gap: 15px;
+            gap: 5px;
             margin-bottom: 30px;
             flex-wrap: wrap;
+            border-bottom: 1px solid #2a2a3e;
+            padding-bottom: 20px;
         }
-        
-        .btn {
-            background: #2a2a3e;
+        .tab {
+            background: transparent;
             border: 1px solid #3a3a4e;
-            color: #d3d3d9;
+            color: #8c8c95;
             padding: 10px 20px;
             cursor: pointer;
             font-size: 14px;
             transition: all 0.2s;
         }
-        
-        .btn:hover {
-            background: #3a3a4e;
-        }
-        
-        .btn-primary {
+        .tab:hover { background: #1a1a2e; }
+        .tab.active {
             background: #2DD512;
             border-color: #2DD512;
             color: #000;
         }
-        
-        .btn-primary:hover {
-            background: #25b50f;
-        }
-        
-        .btn-danger {
-            background: #ff4444;
-            border-color: #ff4444;
-            color: #fff;
-        }
-        
-        .editor-layout {
-            display: grid;
-            grid-template-columns: 300px 1fr;
-            gap: 30px;
-        }
-        
-        @media (max-width: 900px) {
-            .editor-layout {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        .sidebar {
+        .section { display: none; }
+        .section.active { display: block; }
+        .form-section {
             background: #111118;
             border: 1px solid #2a2a3e;
-            padding: 20px;
-            height: fit-content;
+            padding: 25px;
+            margin-bottom: 20px;
         }
-        
-        .sidebar h3 {
+        .form-section h3 {
             color: #fff;
-            font-size: 14px;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .project-list {
-            list-style: none;
-        }
-        
-        .project-list li {
-            padding: 10px;
-            margin-bottom: 5px;
-            cursor: pointer;
-            border-radius: 4px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .project-list li:hover {
-            background: #1a1a2e;
-        }
-        
-        .project-list li.active {
-            background: #2a2a3e;
-            border-left: 3px solid #2DD512;
-        }
-        
-        .project-list .delete-btn {
-            opacity: 0;
-            background: none;
-            border: none;
-            color: #ff4444;
-            cursor: pointer;
             font-size: 16px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #2a2a3e;
         }
-        
-        .project-list li:hover .delete-btn {
-            opacity: 1;
-        }
-        
-        .main-editor {
-            background: #111118;
-            border: 1px solid #2a2a3e;
-            padding: 30px;
-        }
-        
-        .form-group {
-            margin-bottom: 25px;
-        }
-        
+        .form-group { margin-bottom: 20px; }
         .form-group label {
             display: block;
             margin-bottom: 8px;
@@ -162,10 +70,8 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
-        
         .form-group input,
-        .form-group textarea,
-        .form-group select {
+        .form-group textarea {
             width: 100%;
             background: #0a0a0f;
             border: 1px solid #3a3a4e;
@@ -174,104 +80,40 @@
             font-size: 14px;
             font-family: inherit;
         }
-        
         .form-group input:focus,
-        .form-group textarea:focus,
-        .form-group select:focus {
+        .form-group textarea:focus {
             outline: none;
             border-color: #2DD512;
         }
-        
-        .form-group textarea {
-            min-height: 100px;
-            resize: vertical;
-        }
-        
+        .form-group textarea { min-height: 80px; resize: vertical; }
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 20px;
         }
-        
-        @media (max-width: 600px) {
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        .image-preview {
-            width: 100%;
-            max-width: 400px;
-            aspect-ratio: 16 / 9;
-            background: #0a0a0f;
-            border: 2px dashed #3a3a4e;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 10px;
-            overflow: hidden;
-        }
-        
-        .image-preview img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .image-preview .placeholder {
-            color: #4a4a5e;
+        @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+        .btn {
+            background: #2a2a3e;
+            border: 1px solid #3a3a4e;
+            color: #d3d3d9;
+            padding: 12px 24px;
+            cursor: pointer;
             font-size: 14px;
+            transition: all 0.2s;
         }
-        
-        .preview-section {
-            margin-top: 40px;
-            padding-top: 30px;
-            border-top: 1px solid #2a2a3e;
+        .btn:hover { background: #3a3a4e; }
+        .btn-primary {
+            background: #2DD512;
+            border-color: #2DD512;
+            color: #000;
         }
-        
-        .preview-section h3 {
-            color: #fff;
-            margin-bottom: 20px;
-            font-size: 16px;
+        .btn-primary:hover { background: #25b50f; }
+        .toolbar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
         }
-        
-        .preview-card {
-            background: #0a0a0f;
-            border: 1px solid #2a2a3e;
-            max-width: 400px;
-        }
-        
-        .preview-card img {
-            width: 100%;
-            aspect-ratio: 1 / 1;
-            object-fit: cover;
-        }
-        
-        .preview-card .info {
-            padding: 15px;
-        }
-        
-        .preview-card h4 {
-            color: #fff;
-            margin-bottom: 5px;
-        }
-        
-        .preview-card p {
-            color: #8c8c95;
-            font-size: 13px;
-        }
-        
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: #8c8c95;
-        }
-        
-        .empty-state h2 {
-            color: #fff;
-            margin-bottom: 10px;
-        }
-        
         .toast {
             position: fixed;
             bottom: 20px;
@@ -282,432 +124,259 @@
             font-weight: 500;
             transform: translateY(100px);
             transition: transform 0.3s;
+            z-index: 2000;
         }
-        
-        .toast.show {
-            transform: translateY(0);
-        }
-        
-        .section-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        
-        .section-tab {
-            background: transparent;
-            border: 1px solid #3a3a4e;
-            color: #8c8c95;
-            padding: 8px 16px;
-            cursor: pointer;
-        }
-        
-        .section-tab.active {
-            background: #2a2a3e;
-            color: #fff;
-            border-color: #2a2a3e;
-        }
+        .toast.show { transform: translateY(0); }
     </style>
 </head>
 <body>
     <header class="header">
-        <h1>🎨 Portfolio Editor</h1>
-        <p>Edit your projects, update content, and manage your portfolio</p>
+        <h1>🎨 Complete Portfolio Editor</h1>
+        <p>Edit EVERYTHING: page info, projects, skills, navigation, footer</p>
     </header>
     
     <div class="container">
         <div class="toolbar">
-            <button class="btn btn-primary" onclick="addNewProject()">+ New Project</button>
-            <button class="btn" onclick="exportData()">📥 Export Data</button>
+            <button class="btn btn-primary" onclick="exportData()">📥 Export All Data</button>
             <button class="btn" onclick="importData()">📤 Import Data</button>
-            <button class="btn btn-danger" onclick="resetData()">↺ Reset</button>
         </div>
         
-        <div class="section-tabs">
-            <button class="section-tab active" onclick="switchSection('main')">Main Projects</button>
-            <button class="section-tab" onclick="switchSection('other')">Other Work</button>
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('page')">📄 Page Info</button>
+            <button class="tab" onclick="showTab('dataset')">📊 Dataset</button>
+            <button class="tab" onclick="showTab('nav')">🧭 Navigation</button>
+            <button class="tab" onclick="showTab('main')">⭐ Main Projects</button>
+            <button class="tab" onclick="showTab('other')">📁 Other Work</button>
         </div>
         
-        <div class="editor-layout">
-            <aside class="sidebar">
-                <h3>Projects</h3>
-                <ul class="project-list" id="projectList">
-                    <!-- Projects loaded here -->
-                </ul>
-            </aside>
-            
-            <main class="main-editor" id="editorPanel">
-                <div class="empty-state">
-                    <h2>Select a project to edit</h2>
-                    <p>Choose a project from the sidebar or create a new one</p>
+        <!-- Page Info Tab -->
+        <div class="section active" id="pageTab">
+            <div class="form-section">
+                <h3>Page Metadata</h3>
+                <div class="form-group">
+                    <label>Page Title</label>
+                    <input type="text" id="pageTitle" value="Nico Maggioli Portfolio">
                 </div>
-            </main>
+                <div class="form-group">
+                    <label>Meta Description</label>
+                    <textarea id="metaDescription">Personal portfolio gallery by Nico Maggioli.</textarea>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3>Hero Section</h3>
+                <div class="form-group">
+                    <label>Channel Title</label>
+                    <input type="text" id="channelTitle" value="Nico Maggioli / Design Lab / Live Work Archive">
+                </div>
+                <div class="form-group">
+                    <label>Channel Subtitle</label>
+                    <textarea id="channelSubtitle">Creative strategy, visual identity, and 3D-driven systems. This board is a collection of my work throughout the years.</textarea>
+                </div>
+            </div>
+            
+            <button class="btn btn-primary" onclick="saveData()">💾 Save All Changes</button>
+        </div>
+        
+        <!-- Dataset Tab -->
+        <div class="section" id="datasetTab">
+            <div class="form-section">
+                <h3>Dataset Info (Sidebar)</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Since Year</label>
+                        <input type="text" id="datasetSince" value="2014">
+                    </div>
+                    <div class="form-group">
+                        <label>Currently At</label>
+                        <input type="text" id="datasetAt" value="Sprout Studios">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Items Count</label>
+                    <input type="text" id="datasetItems" value="179+">
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3>Skills (comma separated)</h3>
+                <div class="form-group">
+                    <textarea id="skillsList" style="min-height: 100px;">Creative strategy, Visual identity, 3D visualization, AI-assisted exploration</textarea>
+                </div>
+            </div>
+            
+            <button class="btn btn-primary" onclick="saveData()">💾 Save All Changes</button>
+        </div>
+        
+        <!-- Navigation Tab -->
+        <div class="section" id="navTab">
+            <div class="form-section">
+                <h3>Brand Name</h3>
+                <div class="form-group">
+                    <label>Logo Text</label>
+                    <input type="text" id="brandName" value="Nico Maggioli">
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3>Navigation Items (format: Label|URL|active)</h3>
+                <div class="form-group">
+                    <textarea id="navItems" style="min-height: 150px;">Work|/work|true
+Projects|/projects|false
+About|/about|false
+Contact|/contact|false</textarea>
+                </div>
+            </div>
+            
+            <button class="btn btn-primary" onclick="saveData()">💾 Save All Changes</button>
+        </div>
+        
+        <!-- Main Projects Tab -->
+        <div class="section" id="mainTab">
+            <div class="form-section">
+                <h3>Main Projects (JSON format)</h3>
+                <div class="form-group">
+                    <label>Edit all main projects</label>
+                    <textarea id="mainProjects" style="min-height: 400px; font-family: monospace; font-size: 12px;"></textarea>
+                </div>
+            </div>
+            <button class="btn btn-primary" onclick="saveData()">💾 Save All Changes</button>
+        </div>
+        
+        <!-- Other Work Tab -->
+        <div class="section" id="otherTab">
+            <div class="form-section">
+                <h3>Other Work (JSON format)</h3>
+                <div class="form-group">
+                    <label>Edit all other projects</label>
+                    <textarea id="otherProjects" style="min-height: 400px; font-family: monospace; font-size: 12px;"></textarea>
+                </div>
+            </div>
+            <button class="btn btn-primary" onclick="saveData()">💾 Save All Changes</button>
         </div>
     </div>
     
     <div class="toast" id="toast">Changes saved!</div>
     
     <script>
-        // Default data structure
+        // Default data
         const defaultData = {
-            mainProjects: [
-                {
-                    id: 'boreal',
-                    title: 'Boreal',
-                    description: 'Creative strategy and visual identity for a cold-weather apparel brand.',
-                    heroImage: '../media/boreal/hero.png',
-                    link: '/boreal',
-                    category: 'Brand Identity',
-                    year: '2024'
-                },
-                {
-                    id: 'nestquest',
-                    title: 'Nestquest',
-                    description: 'Digital product design for a real estate discovery platform.',
-                    heroImage: '../media/nestquest/hero.png',
-                    link: '/nestquest',
-                    category: 'Digital Product',
-                    year: '2024'
-                },
-                {
-                    id: 'peak',
-                    title: 'Peak',
-                    description: 'Visual identity and 3D campaign for an outdoor performance brand.',
-                    heroImage: '../media/peak/hero.png',
-                    link: '/peak',
-                    category: 'Campaign',
-                    year: '2023'
-                },
-                {
-                    id: 'cognis',
-                    title: 'Cognis',
-                    description: 'Brand system and web experience for an AI research lab.',
-                    heroImage: '../media/cognis/llk2v2ue8sghF49ztVTxIJM.png',
-                    link: '/cognis',
-                    category: 'Brand + Web',
-                    year: '2023'
-                },
-                {
-                    id: 'pawlish',
-                    title: 'Pawlish',
-                    description: 'Packaging and brand identity for a premium pet care line.',
-                    heroImage: '../media/pawlish/hero.png',
-                    link: '/pawlish',
-                    category: 'Packaging',
-                    year: '2023'
-                },
-                {
-                    id: 'mirage',
-                    title: 'Mirage',
-                    description: 'Experimental 3D art direction and visual exploration.',
-                    heroImage: '../media/mirage/1.png',
-                    link: '/mirage',
-                    category: '3D Art Direction',
-                    year: '2023'
-                },
-                {
-                    id: 'oxa',
-                    title: 'OXA',
-                    description: 'Brand identity and digital experience for a tech startup.',
-                    heroImage: '../media/oxa/hero.png',
-                    link: '/oxa',
-                    category: 'Brand Identity',
-                    year: '2022'
-                }
-            ],
-            otherProjects: [
-                {
-                    id: '3d-print',
-                    title: '3D Print',
-                    description: 'Custom 3D printed objects and prototypes.',
-                    heroImage: '../media/3dprint/hero.png',
-                    link: '/3d-print',
-                    category: '3D Design',
-                    year: '2024'
-                },
-                {
-                    id: 'blender',
-                    title: 'Blender Experiments',
-                    description: 'Personal 3D experiments and visual studies.',
-                    heroImage: '../media/blender/hero.png',
-                    link: '/blender',
-                    category: '3D Art',
-                    year: '2024'
-                },
-                {
-                    id: 'fingerboard',
-                    title: 'Fingerboard',
-                    description: '3D modeled and rendered fingerboard designs.',
-                    heroImage: '../media/fingerboard/hero.png',
-                    link: '/fingerboard',
-                    category: '3D Product',
-                    year: '2023'
-                },
-                {
-                    id: 'logos',
-                    title: 'Logo Collection',
-                    description: 'Selected logo designs and brand marks.',
-                    heroImage: '../media/logos/hero.png',
-                    link: '/logos',
-                    category: 'Logo Design',
-                    year: '2023'
-                },
-                {
-                    id: 'music',
-                    title: 'Music Visuals',
-                    description: 'Album artwork and visualizers for musicians.',
-                    heroImage: '../media/music/hero.png',
-                    link: '/music',
-                    category: 'Music Art',
-                    year: '2022'
-                }
-            ]
+            pageContent: {
+                title: "Nico Maggioli Portfolio",
+                metaDescription: "Personal portfolio gallery by Nico Maggioli.",
+                channelTitle: "Nico Maggioli / Design Lab / Live Work Archive",
+                channelSubtitle: "Creative strategy, visual identity, and 3D-driven systems. This board is a collection of my work throughout the years."
+            },
+            dataset: {
+                since: "2014",
+                currentlyAt: "Sprout Studios",
+                items: "179+"
+            },
+            skills: ["Creative strategy", "Visual identity", "3D visualization", "AI-assisted exploration"],
+            navigation: {
+                brandName: "Nico Maggioli",
+                navItems: [
+                    {label: "Work", href: "/work", active: true},
+                    {label: "Projects", href: "/projects", active: false},
+                    {label: "About", href: "/about", active: false},
+                    {label: "Contact", href: "/contact", active: false}
+                ]
+            },
+            mainProjects: [],
+            otherProjects: []
         };
         
         let data = JSON.parse(JSON.stringify(defaultData));
-        let currentSection = 'main';
-        let currentProjectId = null;
         
-        // Load data from localStorage
+        // Load data
         function loadData() {
-            const saved = localStorage.getItem('nmPortfolioData');
+            const saved = localStorage.getItem('nmCompletePortfolio');
             if (saved) {
                 try {
                     data = JSON.parse(saved);
                 } catch (e) {
-                    console.error('Failed to load data');
+                    console.error('Failed to load');
                 }
             }
-            renderProjectList();
+            populateFields();
         }
         
-        // Save data to localStorage
+        // Populate fields
+        function populateFields() {
+            document.getElementById('pageTitle').value = data.pageContent.title;
+            document.getElementById('metaDescription').value = data.pageContent.metaDescription;
+            document.getElementById('channelTitle').value = data.pageContent.channelTitle;
+            document.getElementById('channelSubtitle').value = data.pageContent.channelSubtitle;
+            
+            document.getElementById('datasetSince').value = data.dataset.since;
+            document.getElementById('datasetAt').value = data.dataset.currentlyAt;
+            document.getElementById('datasetItems').value = data.dataset.items;
+            
+            document.getElementById('skillsList').value = data.skills.join(', ');
+            document.getElementById('brandName').value = data.navigation.brandName;
+            
+            const navText = data.navigation.navItems.map(i => `${i.label}|${i.href}|${i.active}`).join('\\n');
+            document.getElementById('navItems').value = navText;
+            
+            document.getElementById('mainProjects').value = JSON.stringify(data.mainProjects, null, 2);
+            document.getElementById('otherProjects').value = JSON.stringify(data.otherProjects, null, 2);
+        }
+        
+        // Save data
         function saveData() {
-            localStorage.setItem('nmPortfolioData', JSON.stringify(data));
-            showToast('Changes saved!');
+            data.pageContent.title = document.getElementById('pageTitle').value;
+            data.pageContent.metaDescription = document.getElementById('metaDescription').value;
+            data.pageContent.channelTitle = document.getElementById('channelTitle').value;
+            data.pageContent.channelSubtitle = document.getElementById('channelSubtitle').value;
+            
+            data.dataset.since = document.getElementById('datasetSince').value;
+            data.dataset.currentlyAt = document.getElementById('datasetAt').value;
+            data.dataset.items = document.getElementById('datasetItems').value;
+            
+            data.skills = document.getElementById('skillsList').value.split(',').map(s => s.trim());
+            data.navigation.brandName = document.getElementById('brandName').value;
+            
+            data.navigation.navItems = document.getElementById('navItems').value.split('\\n').map(line => {
+                const parts = line.split('|');
+                return {label: parts[0], href: parts[1], active: parts[2] === 'true'};
+            });
+            
+            try {
+                data.mainProjects = JSON.parse(document.getElementById('mainProjects').value);
+                data.otherProjects = JSON.parse(document.getElementById('otherProjects').value);
+            } catch (e) {
+                alert('Invalid JSON in projects!');
+                return;
+            }
+            
+            localStorage.setItem('nmCompletePortfolio', JSON.stringify(data));
+            
+            const toast = document.getElementById('toast');
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2000);
         }
         
-        // Render project list
-        function renderProjectList() {
-            const list = document.getElementById('projectList');
-            const projects = currentSection === 'main' ? data.mainProjects : data.otherProjects;
-            
-            list.innerHTML = projects.map(p => `
-                <li class="${p.id === currentProjectId ? 'active' : ''}" onclick="selectProject('${p.id}')">
-                    <span>${p.title}</span>
-                    <button class="delete-btn" onclick="event.stopPropagation(); deleteProject('${p.id}')">×</button>
-                </li>
-            `).join('');
-        }
-        
-        // Switch section
-        function switchSection(section) {
-            currentSection = section;
-            currentProjectId = null;
-            
-            document.querySelectorAll('.section-tab').forEach(tab => tab.classList.remove('active'));
+        // Tab switching
+        function showTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             event.target.classList.add('active');
-            
-            renderProjectList();
-            renderEmptyState();
+            document.getElementById(tab + 'Tab').classList.add('active');
         }
         
-        // Select project
-        function selectProject(id) {
-            currentProjectId = id;
-            renderProjectList();
-            
-            const projects = currentSection === 'main' ? data.mainProjects : data.otherProjects;
-            const project = projects.find(p => p.id === id);
-            
-            if (project) {
-                renderEditor(project);
-            }
-        }
-        
-        // Render empty state
-        function renderEmptyState() {
-            document.getElementById('editorPanel').innerHTML = `
-                <div class="empty-state">
-                    <h2>Select a project to edit</h2>
-                    <p>Choose a project from the sidebar or create a new one</p>
-                </div>
-            `;
-        }
-        
-        // Render editor
-        function renderEditor(project) {
-            const editor = document.getElementById('editorPanel');
-            
-            editor.innerHTML = `
-                <div class="form-group">
-                    <label>Project Title</label>
-                    <input type="text" id="editTitle" value="${project.title}" onchange="updateProject()">
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Category</label>
-                        <input type="text" id="editCategory" value="${project.category}" onchange="updateProject()">
-                    </div>
-                    <div class="form-group">
-                        <label>Year</label>
-                        <input type="text" id="editYear" value="${project.year}" onchange="updateProject()">
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label>Description</label>
-                    <textarea id="editDescription" onchange="updateProject()">${project.description}</textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label>Hero Image URL</label>
-                    <input type="text" id="editImage" value="${project.heroImage}" onchange="updateProject()">
-                    <div class="image-preview" onclick="document.getElementById('imageInput').click()">
-                        ${project.heroImage ? `<img src="${project.heroImage}" alt="${project.title}">` : '<div class="placeholder">Click to add image</div>'}
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label>Project Link</label>
-                    <input type="text" id="editLink" value="${project.link}" onchange="updateProject()">
-                </div>
-                
-                <div class="toolbar" style="margin-top: 30px;">
-                    <button class="btn btn-primary" onclick="saveToFile()">💾 Save to File</button>
-                    <button class="btn" onclick="duplicateProject()">📋 Duplicate</button>
-                </div>
-                
-                <div class="preview-section">
-                    <h3>Live Preview</h3>
-                    <div class="preview-card">
-                        <img src="${project.heroImage || ''}" alt="" onerror="this.style.display='none'">
-                        <div class="info">
-                            <h4>${project.title}</h4>
-                            <p>${project.category} • ${project.year}</p>
-                            <p style="margin-top: 8px; color: #ababb4;">${project.description}</p>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-        
-        // Update project from form
-        function updateProject() {
-            if (!currentProjectId) return;
-            
-            const projects = currentSection === 'main' ? data.mainProjects : data.otherProjects;
-            const project = projects.find(p => p.id === currentProjectId);
-            
-            if (project) {
-                project.title = document.getElementById('editTitle').value;
-                project.category = document.getElementById('editCategory').value;
-                project.year = document.getElementById('editYear').value;
-                project.description = document.getElementById('editDescription').value;
-                project.heroImage = document.getElementById('editImage').value;
-                project.link = document.getElementById('editLink').value;
-                
-                saveData();
-                renderProjectList();
-                
-                // Update preview
-                const previewImg = document.querySelector('.preview-card img');
-                const previewTitle = document.querySelector('.preview-card h4');
-                const previewMeta = document.querySelector('.preview-card p');
-                const previewDesc = document.querySelectorAll('.preview-card p')[1];
-                
-                if (previewImg) {
-                    previewImg.src = project.heroImage;
-                    previewImg.style.display = 'block';
-                }
-                if (previewTitle) previewTitle.textContent = project.title;
-                if (previewMeta) previewMeta.textContent = `${project.category} • ${project.year}`;
-                if (previewDesc) previewDesc.textContent = project.description;
-            }
-        }
-        
-        // Add new project
-        function addNewProject() {
-            const id = 'project-' + Date.now();
-            const newProject = {
-                id: id,
-                title: 'New Project',
-                description: 'Project description...',
-                heroImage: '',
-                link: '/' + id,
-                category: 'Category',
-                year: '2024'
-            };
-            
-            if (currentSection === 'main') {
-                data.mainProjects.push(newProject);
-            } else {
-                data.otherProjects.push(newProject);
-            }
-            
-            saveData();
-            renderProjectList();
-            selectProject(id);
-        }
-        
-        // Delete project
-        function deleteProject(id) {
-            if (!confirm('Delete this project?')) return;
-            
-            if (currentSection === 'main') {
-                data.mainProjects = data.mainProjects.filter(p => p.id !== id);
-            } else {
-                data.otherProjects = data.otherProjects.filter(p => p.id !== id);
-            }
-            
-            if (currentProjectId === id) {
-                currentProjectId = null;
-                renderEmptyState();
-            }
-            
-            saveData();
-            renderProjectList();
-        }
-        
-        // Duplicate project
-        function duplicateProject() {
-            if (!currentProjectId) return;
-            
-            const projects = currentSection === 'main' ? data.mainProjects : data.otherProjects;
-            const project = projects.find(p => p.id === currentProjectId);
-            
-            if (project) {
-                const newProject = {
-                    ...project,
-                    id: project.id + '-copy',
-                    title: project.title + ' (Copy)'
-                };
-                
-                if (currentSection === 'main') {
-                    data.mainProjects.push(newProject);
-                } else {
-                    data.otherProjects.push(newProject);
-                }
-                
-                saveData();
-                renderProjectList();
-            }
-        }
-        
-        // Export data as JSON file
+        // Export
         function exportData() {
-            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            saveData();
+            const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'portfolio-data.json';
+            a.download = 'portfolio-complete.json';
             a.click();
             URL.revokeObjectURL(url);
-            showToast('Data exported!');
         }
         
-        // Import data from JSON file
+        // Import
         function importData() {
             const input = document.createElement('input');
             input.type = 'file';
@@ -719,14 +388,9 @@
                     reader.onload = (event) => {
                         try {
                             data = JSON.parse(event.target.result);
-                            saveData();
-                            renderProjectList();
-                            if (currentProjectId) {
-                                const projects = currentSection === 'main' ? data.mainProjects : data.otherProjects;
-                                const project = projects.find(p => p.id === currentProjectId);
-                                if (project) renderEditor(project);
-                            }
-                            showToast('Data imported!');
+                            localStorage.setItem('nmCompletePortfolio', JSON.stringify(data));
+                            populateFields();
+                            alert('Data imported!');
                         } catch (err) {
                             alert('Invalid JSON file');
                         }
@@ -735,30 +399,6 @@
                 }
             };
             input.click();
-        }
-        
-        // Reset to default
-        function resetData() {
-            if (!confirm('Reset all data to defaults?')) return;
-            data = JSON.parse(JSON.stringify(defaultData));
-            currentProjectId = null;
-            saveData();
-            renderProjectList();
-            renderEmptyState();
-            showToast('Data reset!');
-        }
-        
-        // Save to file (download JSON)
-        function saveToFile() {
-            exportData();
-        }
-        
-        // Show toast
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 2000);
         }
         
         // Initialize
